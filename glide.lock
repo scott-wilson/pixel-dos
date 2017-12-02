@@ -1,0 +1,8 @@
+hash: 3e03b745b2077aa210bbb70903c8208c158881f8e1a03e95b0635aace852d564
+updated: 2017-11-29T22:16:30.789126118-08:00
+imports:
+- name: github.com/scott-wilson/dosbot
+  version: d9cd7752e0a2805ae6e9f0c62f7391ffc4e927a9
+- name: github.com/scott-wilson/dosbot-connector-discord
+  version: 9a0e77b9a0f65ee306c436341f7acfab9506c175
+testImports: []
