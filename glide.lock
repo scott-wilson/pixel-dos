@@ -1,8 +1,60 @@
-hash: 3e03b745b2077aa210bbb70903c8208c158881f8e1a03e95b0635aace852d564
-updated: 2017-11-29T22:16:30.789126118-08:00
+hash: b4586446ec151db8ece9a95e71cad180fa27026eae2ca79074c33b331a800453
+updated: 2017-12-05T22:13:47.517697827-08:00
 imports:
+- name: github.com/bwmarrin/discordgo
+  version: 2fda7ce223a66a5b70b66987c22c3c94d022ee66
+- name: github.com/fsnotify/fsnotify
+  version: 4da3e2cfbabc9f751898f250b49f2439785783a1
+- name: github.com/gorilla/websocket
+  version: ea4d1f681babbce9545c9c5f3d5194a789c89f5b
+- name: github.com/hashicorp/hcl
+  version: 23c074d0eceb2b8a5bfdbb271ab780cde70f05a8
+  subpackages:
+  - hcl/ast
+  - hcl/parser
+  - hcl/scanner
+  - hcl/strconv
+  - hcl/token
+  - json/parser
+  - json/scanner
+  - json/token
+- name: github.com/magiconair/properties
+  version: 49d762b9817ba1c2e9d0c69183c2b4a8b8f1d934
+- name: github.com/mitchellh/mapstructure
+  version: 06020f85339e21b2478f756a78e295255ffa4d6a
+- name: github.com/pelletier/go-toml
+  version: 4e9e0ee19b60b13eb79915933f44d8ed5f268bdd
 - name: github.com/scott-wilson/dosbot
-  version: d9cd7752e0a2805ae6e9f0c62f7391ffc4e927a9
+  version: f62144d27ffd93dbad579cd3f8ca610e19834012
 - name: github.com/scott-wilson/dosbot-connector-discord
-  version: 9a0e77b9a0f65ee306c436341f7acfab9506c175
+  version: 00e321bd8bba4fd37ea5631ff75320c9199fd6ab
+- name: github.com/spf13/afero
+  version: 8d919cbe7e2627e417f3e45c3c0e489a5b7e2536
+  subpackages:
+  - mem
+- name: github.com/spf13/cast
+  version: acbeb36b902d72a7a4c18e8f3241075e7ab763e4
+- name: github.com/spf13/jwalterweatherman
+  version: 12bd96e66386c1960ab0f74ced1362f66f552f7b
+- name: github.com/spf13/pflag
+  version: 4c012f6dcd9546820e378d0bdda4d8fc772cdfea
+- name: github.com/spf13/viper
+  version: 25b30aa063fc18e48662b86996252eabdcf2f0c7
+- name: golang.org/x/crypto
+  version: 94eea52f7b742c7cbe0b03b22f0c4c8631ece122
+  subpackages:
+  - nacl/secretbox
+  - poly1305
+  - salsa20/salsa
+- name: golang.org/x/sys
+  version: 8b4580aae2a0dd0c231a45d3ccb8434ff533b840
+  subpackages:
+  - unix
+- name: golang.org/x/text
+  version: 57961680700a5336d15015c8c50686ca5ba362a4
+  subpackages:
+  - transform
+  - unicode/norm
+- name: gopkg.in/yaml.v2
+  version: 287cf08546ab5e7e37d55a84f7ed3fd1db036de5
 testImports: []

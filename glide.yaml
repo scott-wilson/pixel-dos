@@ -3,4 +3,4 @@ import:
 - package: github.com/scott-wilson/dosbot
   version: ^0.2.0
 - package: github.com/scott-wilson/dosbot-connector-discord
-  version: ^0.1.0
+  version: ^0.2.0
