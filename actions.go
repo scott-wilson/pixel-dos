@@ -29,9 +29,9 @@ var (
 		regexp.MustCompile(`(?i)within cells interlinked`):                                                "Within cells interlinked.",
 		regexp.MustCompile(`(?i)why don't you say within cells interlinked three times`):                  "Within cells interlinked. Within cells interlinked. Within cells interlinked.",
 	}
-	addRoleMessageRegex    = regexp.MustCompile(`(?i)give me role (.+)`)
-	removeRoleMessageRegex = regexp.MustCompile(`(?i)remove my role (.+)`)
-	listRolesMessageRegex  = regexp.MustCompile(`(?i)list roles`)
+	addRoleMessageRegex    = regexp.MustCompile(`(?i)addrole (.+)`)
+	removeRoleMessageRegex = regexp.MustCompile(`(?i)removerole (.+)`)
+	listRolesMessageRegex  = regexp.MustCompile(`(?i)listroles`)
 )
 
 func baselineRecalibration(event dosbot.Event) error {
