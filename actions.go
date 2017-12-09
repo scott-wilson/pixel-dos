@@ -12,6 +12,7 @@ import (
 	discord "github.com/scott-wilson/dosbot-connector-discord"
 )
 
+// Regexes dos will pay attention to
 var (
 	baselineRecalibrationMessageResponse = map[*regexp.Regexp]string{
 		regexp.MustCompile(`(?i)recite your baseline`):                                                    "And blood-black nothingness began to spin... A system of cells interlinked within cells interlinked within cells interlinked within one stem... And dreadfully distinct against the dark, a tall white fountain played.",
@@ -34,6 +35,11 @@ var (
 	listRolesMessageRegex  = regexp.MustCompile(`(?i)listroles`)
 )
 
+// Helper regexes
+var (
+	splitRoleRegex = regexp.MustCompile(` *, *`)
+)
+
 func baselineRecalibration(event dosbot.Event) error {
 	bot := event.Bot()
 	room := event.Room()
@@ -52,13 +58,13 @@ func baselineRecalibration(event dosbot.Event) error {
 func addRole(event dosbot.Event) error {
 	room := event.Room()
 	message := event.Message()
-	result := addRoleMessageRegex.FindAllStringSubmatch(message, -1)
+	result := addRoleMessageRegex.FindStringSubmatch(message)
 
 	if len(result) == 0 {
 		return nil
 	}
 
-	roleName := result[0][1]
+	roleNames := splitRoleRegex.Split(result[1], -1)
 
 	bot := event.Bot().(discord.Bot)
 	sender := event.Sender()
@@ -75,24 +81,35 @@ func addRole(event dosbot.Event) error {
 		return err
 	}
 
+	roleNameMap := make(map[string]*discordgo.Role)
+
 	for _, role := range guild.Roles {
-		if role.Name == roleName {
-			if !isValidRole(role) {
-				bot.SendDirectMessage(room, sender, "I'm sorry, but I don't have permissions to give you that role. :frowning:")
-				return nil
-			}
-
-			if err := session.GuildMemberRoleAdd(channel.GuildID, sender.ID().(string), role.ID); err != nil {
-				return err
-			}
-
-			bot.SendDirectMessage(room, sender, "Done! :grinning:")
-
-			return nil
-		}
+		roleNameMap[role.Name] = role
 	}
 
-	bot.SendDirectMessage(room, sender, "I'm sorry, but I didn't find that role. :frowning:")
+	validRoles := make([]string, 0)
+
+	for _, roleName := range roleNames {
+		role, ok := roleNameMap[roleName]
+
+		if !ok || !isValidRole(role) {
+			continue
+		}
+
+		if err := session.GuildMemberRoleAdd(channel.GuildID, sender.ID().(string), role.ID); err != nil {
+			return err
+		}
+
+		validRoles = append(validRoles, roleName)
+	}
+
+	if len(validRoles) > 0 {
+		sort.Strings(validRoles)
+		validRolesMessage := strings.Join(validRoles, ", ")
+		bot.SendDirectMessage(room, sender, fmt.Sprintf("I've added the following roles to your account: %s :grinning:", validRolesMessage))
+	} else {
+		bot.SendDirectMessage(room, sender, "I'm sorry, but I could not do what you asked. :frowning:")
+	}
 
 	return nil
 }
@@ -100,13 +117,13 @@ func addRole(event dosbot.Event) error {
 func removeRole(event dosbot.Event) error {
 	room := event.Room()
 	message := event.Message()
-	result := removeRoleMessageRegex.FindAllStringSubmatch(message, -1)
+	result := removeRoleMessageRegex.FindStringSubmatch(message)
 
 	if len(result) == 0 {
 		return nil
 	}
 
-	roleName := result[0][1]
+	roleNames := splitRoleRegex.Split(result[1], -1)
 
 	bot := event.Bot().(discord.Bot)
 	sender := event.Sender()
@@ -123,19 +140,35 @@ func removeRole(event dosbot.Event) error {
 		return err
 	}
 
+	roleNameMap := make(map[string]*discordgo.Role)
+
 	for _, role := range guild.Roles {
-		if role.Name == roleName {
-			if err := session.GuildMemberRoleRemove(channel.GuildID, sender.ID().(string), role.ID); err != nil {
-				return err
-			}
-
-			bot.SendDirectMessage(room, sender, "Done! :grinning:")
-
-			return nil
-		}
+		roleNameMap[role.Name] = role
 	}
 
-	bot.SendDirectMessage(room, sender, "I'm sorry, but I didn't find that role. :frowning:")
+	validRoles := make([]string, 0)
+
+	for _, roleName := range roleNames {
+		role, ok := roleNameMap[roleName]
+
+		if !ok {
+			continue
+		}
+
+		if err := session.GuildMemberRoleRemove(channel.GuildID, sender.ID().(string), role.ID); err != nil {
+			return err
+		}
+
+		validRoles = append(validRoles, roleName)
+	}
+
+	if len(validRoles) > 0 {
+		sort.Strings(validRoles)
+		validRolesMessage := strings.Join(validRoles, ", ")
+		bot.SendDirectMessage(room, sender, fmt.Sprintf("I've removed the following roles from your account: %s :grinning:", validRolesMessage))
+	} else {
+		bot.SendDirectMessage(room, sender, "I'm sorry, but I could not do what you asked. :frowning:")
+	}
 
 	return nil
 }
